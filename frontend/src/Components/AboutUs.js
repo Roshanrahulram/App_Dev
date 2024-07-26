@@ -1,31 +1,23 @@
+// src/Components/AboutUs.js
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
 import { Container, TextField, Button, Typography, Box, CssBaseline } from '@mui/material';
 
-const Login = ({ userDetails, setIsAuthenticated }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const AboutUs = () => {
   const [message, setMessage] = useState('');
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
-    if (!username) newErrors.username = 'Username is required';
-    if (!password) newErrors.password = 'Password is required';
+    if (!message) newErrors.message = 'Message is required';
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    if (userDetails && username === userDetails.username && password === userDetails.password) {
-      setIsAuthenticated(true);
-      navigate('/home');
-    } else {
-      setMessage('Invalid username or password');
-    }
+    console.log('Message:', message);
+    setMessage('Message sent successfully.');
   };
 
   return (
@@ -53,7 +45,7 @@ const Login = ({ userDetails, setIsAuthenticated }) => {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              border: '2px solid #007bff',
+              border: '2px solid transparent',
               borderRadius: '10px',
               p: 3,
               boxShadow: 3,
@@ -61,35 +53,24 @@ const Login = ({ userDetails, setIsAuthenticated }) => {
             }}
           >
             <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              Login
+              About Us
+            </Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              We are a hall booking service dedicated to providing the best experience for our customers. Our mission is to simplify the process of booking venues for any occasion, making it easy and stress-free.
             </Typography>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              error={!!errors.username}
-              helperText={errors.username}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!errors.password}
-              helperText={errors.password}
+              id="message"
+              label="Message"
+              name="message"
+              multiline
+              rows={4}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              error={!!errors.message}
+              helperText={errors.message}
             />
             <Button
               type="submit"
@@ -97,12 +78,9 @@ const Login = ({ userDetails, setIsAuthenticated }) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Login
+              Send Message
             </Button>
-            {message && <Typography color="error">{message}</Typography>}
-            <Typography variant="body2" sx={{ mt: 2 }}>
-              Don't have an account? <Link to="/signup">Signup</Link>
-            </Typography>
+            {message && <Typography color="success.main">{message}</Typography>}
           </Box>
         </Container>
       </Box>
@@ -110,4 +88,4 @@ const Login = ({ userDetails, setIsAuthenticated }) => {
   );
 };
 
-export default Login;
+export default AboutUs;

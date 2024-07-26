@@ -1,21 +1,20 @@
+// src/Components/Contact.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Container, TextField, Button, Typography, Box, CssBaseline } from '@mui/material';
 
-const Signup = ({ setUserDetails }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+const Contact = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({});
   const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const newErrors = {};
-    if (!username) newErrors.username = 'Username is required';
-    if (!password) newErrors.password = 'Password is required';
+    if (!name) newErrors.name = 'Name is required';
     if (!email) newErrors.email = 'Email is required';
+    if (!message) newErrors.message = 'Message is required';
     if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'Email is invalid';
 
     if (Object.keys(newErrors).length > 0) {
@@ -23,11 +22,13 @@ const Signup = ({ setUserDetails }) => {
       return;
     }
 
-    const userDetails = { username, password, email };
-    setUserDetails(userDetails);
-    console.log('User details:', userDetails);
-    setMessage('Signup successful. Please log in.');
-    navigate('/login');
+    const contactDetails = { name, email, message };
+    console.log('Contact details:', contactDetails);
+    setSuccessMessage('Thank you for contacting us. We will get back to you soon.');
+    setName('');
+    setEmail('');
+    setMessage('');
+    setErrors({});
   };
 
   return (
@@ -63,21 +64,21 @@ const Signup = ({ setUserDetails }) => {
             }}
           >
             <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              Signup
+              Contact Us
             </Typography>
             <TextField
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
+              id="name"
+              label="Name"
+              name="name"
+              autoComplete="name"
               autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              error={!!errors.username}
-              helperText={errors.username}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              error={!!errors.name}
+              helperText={errors.name}
             />
             <TextField
               margin="normal"
@@ -96,15 +97,15 @@ const Signup = ({ setUserDetails }) => {
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!errors.password}
-              helperText={errors.password}
+              id="message"
+              label="Message"
+              name="message"
+              multiline
+              rows={4}
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              error={!!errors.message}
+              helperText={errors.message}
             />
             <Button
               type="submit"
@@ -112,9 +113,9 @@ const Signup = ({ setUserDetails }) => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Signup
+              Submit
             </Button>
-            {message && <Typography color="success.main">{message}</Typography>}
+            {successMessage && <Typography color="success.main">{successMessage}</Typography>}
           </Box>
         </Container>
       </Box>
@@ -122,4 +123,4 @@ const Signup = ({ setUserDetails }) => {
   );
 };
 
-export default Signup;
+export default Contact;
