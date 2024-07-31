@@ -1,0 +1,32 @@
+/* DashboardPage.css */
+
+/* Container for the dashboard */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header Typography */
+.dashboard-container .MuiTypography-h4 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Paper component styling */
+.MuiPaper-root {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Chart Container */
+.MuiBox-root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Chart Styling */
+.recharts-wrapper {
+  font-size: 14px;
+}

@@ -41,7 +41,7 @@ const Contact = () => {
           alignItems: 'center',
           minHeight: '100vh',
           width: '100vw',
-          backgroundImage: 'url(https://www.oyorooms.com/blog/wp-content/uploads/2018/01/features-1080x720.jpg)',
+          backgroundImage: 'url(https://wallpaperaccess.com/full/4012588.jpg)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           margin: 0,

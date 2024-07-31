@@ -1,112 +1,96 @@
+// src/components/LoginPage.js
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { Container, TextField, Button, Typography, Box, CssBaseline } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import './Login.css'; // Ensure your CSS file is correctly linked
 
-const Login = ({ userDetails, setIsAuthenticated }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+const Login = () => {
+const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [errors, setErrors] = useState({});
+  const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value
+    }));
+  };
+
+  const validate = () => {
+    let validationErrors = {};
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    if (!formData.email) {
+      validationErrors.email = 'Email is required';
+    } else if (!emailPattern.test(formData.email)) {
+      validationErrors.email = 'Invalid email format';
+    }
+
+    if (!formData.password) {
+      validationErrors.password = 'Password is required';
+    }
+
+    setErrors(validationErrors);
+
+    return Object.keys(validationErrors).length === 0;
+};
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newErrors = {};
-    if (!username) newErrors.username = 'Username is required';
-    if (!password) newErrors.password = 'Password is required';
-
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    if (userDetails && username === userDetails.username && password === userDetails.password) {
-      setIsAuthenticated(true);
-      navigate('/home');
-    } else {
-      setMessage('Invalid username or password');
+    if (validate()) {
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+      if (formData.email === 'admin@gmail.com' && formData.password === 'admin234') {
+        const adminUser = { email: 'admin@gmail.com', role: 'admin' };
+        localStorage.setItem('authUser', JSON.stringify(adminUser));
+        navigate('/admin/panel'); // Ensure this matches the route in App.js
+      } else if (formData.email === 'user@gmail.com' && formData.password === 'user') {
+        const regularUser = { email: 'user@gmail.com', role: 'user' };
+        localStorage.setItem('authUser', JSON.stringify(regularUser));
+        navigate('/user/dashboard');
+      } else if (storedUser && storedUser.email === formData.email && storedUser.password === formData.password) {
+        localStorage.setItem('authUser', JSON.stringify(storedUser));
+        navigate('/user/dashboard');
+      } else {
+        setMessage('Invalid email or password');
+      }
     }
   };
 
   return (
-    <>
-      <CssBaseline />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          width: '100vw',
-          backgroundImage: 'url(https://www.oyorooms.com/blog/wp-content/uploads/2018/01/features-1080x720.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          margin: 0,
-          padding: 0,
-        }}
-      >
-        <Container maxWidth="xs">
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              border: '2px solid #007bff',
-              borderRadius: '10px',
-              p: 3,
-              boxShadow: 3,
-              bgcolor: 'rgba(255, 255, 255, 0.8)',
-            }}
-          >
-            <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              Login
-            </Typography>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              error={!!errors.username}
-              helperText={errors.username}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!errors.password}
-              helperText={errors.password}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Login
-            </Button>
-            {message && <Typography color="error">{message}</Typography>}
-            <Typography variant="body2" sx={{ mt: 2 }}>
-              Don't have an account? <Link to="/signup">Signup</Link>
-            </Typography>
-          </Box>
-        </Container>
-      </Box>
-    </>
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleSubmit}>
+        <h3>Login Here</h3>
+        <label>Email</label>
+        <input
+          type="email"
+          placeholder="Enter your Email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        {errors.email && <span className="error-message">{errors.email}</span>}
+        
+        <label>Password</label>
+        <input
+          type="password"
+          placeholder="Enter password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+        />
+        {errors.password && <span className="error-message">{errors.password}</span>}
+        
+        <button type="submit">Login</button>
+        {message && <p className="message">{message}</p>}
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
+      </form>
+    </div>
   );
 };
 

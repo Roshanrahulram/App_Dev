@@ -1,36 +1,39 @@
-// src/Components/NavBar.js
 import React from 'react';
-import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Container, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
+import './Navbar.css'; // Import the CSS file
 
 const NavBar = () => {
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Typography variant="h6" sx={{ flexGrow: 0 }}>
+    <AppBar position="static" className="navbar" elevation={0}>
+      <Container maxWidth="lg">
+        <Toolbar disableGutters>
+          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', mr: 4 }}>
             Hall Booking System
           </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', gap: 2, flexGrow: 1, justifyContent: 'flex-end' }}>
-          <Button color="inherit" component={Link} to="/">
+          <Box sx={{ flexGrow: 1 }} />
+          <Button color="inherit" component={Link} to="/" sx={{ ml: 2 }}>
             Home
           </Button>
-          <Button color="inherit" component={Link} to="/login">
-            Login
-          </Button>
-          <Button color="inherit" component={Link} to="/signup">
-            Signup
-          </Button>
-          <Button color="inherit" component={Link} to="/contact">
-            Contact
-          </Button>
-          <Button color="inherit" component={Link} to="/aboutus">
+          <Button color="inherit" component={Link} to="/aboutus" sx={{ ml: 2 }}>
             About Us
           </Button>
-        </Box>
-      </Toolbar>
+          <Button color="inherit" component={Link} to="/contact" sx={{ ml: 2 }}>
+            Contact
+          </Button>
+          <Button color="inherit" component={Link} to="/login" sx={{ ml: 2 }}>
+            Login
+          </Button>
+          <Button color="inherit" component={Link} to="/signup" sx={{ ml: 2 }}>
+            Signup
+          </Button>
+          
+        
+
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 };
+
 export default NavBar;

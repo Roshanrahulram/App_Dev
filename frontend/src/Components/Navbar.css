@@ -1,38 +1,16 @@
 .navbar {
-    background-color: #333;
-    padding: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .navbar-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1200px;
-  }
-  
-  .navbar-logo {
-    color: #fff;
-    font-size: 1.5rem;
-    text-decoration: none;
-  }
-  
-  .navbar-links {
-    display: flex;
-    align-items: center;
-  }
-  
-  .navbar-item {
-    color: #fff;
-    text-decoration: none;
-    margin-left: 1rem;
-    font-size: 1rem;
-  }
-  
-  .navbar-item:hover {
-    text-decoration: underline;
-  }
-  
+  background-color: #3f51b5; /* Custom background color */
+  color: white;
+}
+
+.navbar .MuiTypography-root {
+  color: white; /* Ensure the text color is white */
+}
+
+.navbar .MuiButton-root {
+  text-transform: none; /* Ensure buttons have normal text casing */
+}
+
+.navbar .MuiButton-root:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Slight hover effect */
+}

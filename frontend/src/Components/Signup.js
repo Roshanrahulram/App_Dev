@@ -1,125 +1,139 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container, TextField, Button, Typography, Box, CssBaseline } from '@mui/material';
+// Signup.js
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import "./SignUp.css";
 
-const Signup = ({ setUserDetails }) => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState({});
-  const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+function Signup() {
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phoneNumber: ""
+    });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const newErrors = {};
-    if (!username) newErrors.username = 'Username is required';
-    if (!password) newErrors.password = 'Password is required';
-    if (!email) newErrors.email = 'Email is required';
-    if (!/\S+@\S+\.\S+/.test(email)) newErrors.email = 'Email is invalid';
+    const [error, setError] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        phoneNumber: "",
+        form: ""
+    });
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+    const navigate = useNavigate();
 
-    const userDetails = { username, password, email };
-    setUserDetails(userDetails);
-    console.log('User details:', userDetails);
-    setMessage('Signup successful. Please log in.');
-    navigate('/login');
-  };
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
+        setError({ ...error, [name]: "", form: "" });
+    };
 
-  return (
-    <>
-      <CssBaseline />
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          width: '100vw',
-          backgroundImage: 'url(https://www.oyorooms.com/blog/wp-content/uploads/2018/01/features-1080x720.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          margin: 0,
-          padding: 0,
-        }}
-      >
-        <Container maxWidth="xs">
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              border: '2px solid #007bff',
-              borderRadius: '10px',
-              p: 3,
-              boxShadow: 3,
-              bgcolor: 'rgba(255, 255, 255, 0.8)',
-            }}
-          >
-            <Typography component="h1" variant="h5" sx={{ mb: 2 }}>
-              Signup
-            </Typography>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              error={!!errors.username}
-              helperText={errors.username}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email"
-              name="email"
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={!!errors.email}
-              helperText={errors.email}
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!errors.password}
-              helperText={errors.password}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Signup
-            </Button>
-            {message && <Typography color="success.main">{message}</Typography>}
-          </Box>
-        </Container>
-      </Box>
-    </>
-  );
-};
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        let formValid = true;
+
+        if (!formData.username || !formData.email || !formData.password || !formData.confirmPassword || !formData.phoneNumber) {
+            setError({
+                username: !formData.username ? "Username is required" : "",
+                email: !formData.email ? "Email is required" : "",
+                password: !formData.password ? "Password is required" : "",
+                confirmPassword: !formData.confirmPassword ? "Confirm Password is required" : "",
+                phoneNumber: !formData.phoneNumber ? "Phone Number is required" : "",
+                form: "All fields are required."
+            });
+            formValid = false;
+        } else if (formData.password !== formData.confirmPassword) {
+            setError({
+                ...error,
+                confirmPassword: "Passwords do not match",
+                form: "Passwords do not match"
+            });
+            formValid = false;
+        } else {
+            setError({
+                username: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                phoneNumber: "",
+                form: ""
+            });
+        }
+
+        if (formValid) {
+            console.log(formData);
+            navigate("/login");
+        }
+    };
+
+    return (
+        <div className="signup-page">
+            <div className="signup-container">
+                <h1>Sign Up</h1>
+                <form onSubmit={handleSubmit}>
+                    <label htmlFor="username">Username:</label>
+                    <input
+                        type="text"
+                        id="username"
+                        placeholder="Enter Username"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                    />
+                    {error.username && <p className="error">{error.username}</p>}
+
+                    <label htmlFor="email">Email:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="Enter Email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
+                    {error.email && <p className="error">{error.email}</p>}
+
+                    <label htmlFor="password">Password:</label>
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter Password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                    />
+                    {error.password && <p className="error">{error.password}</p>}
+
+                    <label htmlFor="confirmPassword">Confirm Password:</label>
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm Password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                    />
+                    {error.confirmPassword && <p className="error">{error.confirmPassword}</p>}
+
+                    <label htmlFor="phoneNumber">Phone Number:</label>
+                    <input
+                        type="text"
+                        id="phoneNumber"
+                        placeholder="Enter Phone Number"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                    />
+                    {error.phoneNumber && <p className="error">{error.phoneNumber}</p>}
+
+                    <button type="submit">Sign Up</button>
+                    <p>If you already have an account, <Link to="/login">Login</Link></p>
+                    {error.form && <p className="error">{error.form}</p>}
+                </form>
+            </div>
+        </div>
+    );
+}
 
 export default Signup;
